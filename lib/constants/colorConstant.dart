@@ -7,5 +7,6 @@ class ColorConstant {
   static Color greyColor200 = Colors.grey.shade200;
   static Color greyColor = Colors.grey;
   static Color orangeColorPrimary = const Color(0xffff660e);
+  static Color orangeColor700OP = Colors.orange.withOpacity(0.6);
   static Color tranColorPrimary = Colors.transparent;
 }
