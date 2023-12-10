@@ -1,5 +1,8 @@
+import 'package:e_comm/apis/api_helper.dart';
+import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
+import 'package:e_comm/model/config_model.dart';
 import 'package:e_comm/pages/main_pages/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,16 +16,36 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController mController;
-
   late AnimationController mSecondController;
-
   late Animation<Size?> sizeAnim;
   var reverseCount = 0;
+  ConfigModel? configData;
 
   @override
   void initState() {
     super.initState();
+    getConfigApi();
+    getAnimate();
+  }
 
+  Future<ConfigModel> getConfigApi() async {
+    configData = await ApiHelper.getConfigAPI(url: Urls.baseUrl);
+    var baseUrl = configData!.baseUrls!;
+    Urls.productImageUrl = baseUrl.productImageUrl!;
+    Urls.productThumImageUrl = baseUrl.productThumbnailUrl!;
+    Urls.digitaProductImageUrl = baseUrl.digitalProductUrl!;
+    Urls.brandImageUrl = baseUrl.brandImageUrl!;
+    Urls.customerImageUrl = baseUrl.categoryImageUrl!;
+    Urls.categoryImageUrl = baseUrl.categoryImageUrl!;
+    Urls.reviewImageUrl = baseUrl.reviewImageUrl!;
+    Urls.sellerImageUrl = baseUrl.sellerImageUrl!;
+    Urls.shopImageUrl = baseUrl.shopImageUrl!;
+    Urls.bannerImageUrl = baseUrl.bannerImageUrl!;
+    Urls.notificationImageUrl = baseUrl.notificationImageUrl!;
+    return configData!;
+  }
+
+  getAnimate() {
     mController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1))
           ..addListener(

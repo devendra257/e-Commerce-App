@@ -30,6 +30,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     pageController = PageController(initialPage: selectedIndex);
+
+    // print("Urls.productThumImageUrl---- ${Urls.productThumImageUrl}");
   }
 
   @override

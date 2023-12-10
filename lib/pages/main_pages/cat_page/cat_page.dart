@@ -1,7 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_comm/apis/api_helper.dart';
+import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/dummy_data.dart';
 import 'package:e_comm/constants/iconConstant.dart';
+import 'package:e_comm/model/banner_model.dart';
+import 'package:e_comm/model/latest_product_model.dart';
 import 'package:e_comm/my_widgets/spacing.dart';
 import 'package:e_comm/my_widgets/text_style.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +20,23 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   int myCarouslValue = 0;
+  late Future<List<BannerModel>> bannerModel;
+
+  @override
+  void initState() {
+    super.initState();
+    bannerModel = getBannerApi();
+  }
+
+  //* Get Banner Data
+  Future<List<BannerModel>> getBannerApi() async {
+    var data = await ApiHelper.getBannerApi(url: Urls.bannerUrl);
+    List bannerDataList = data;
+    List<BannerModel> bannerModel = [];
+    bannerModel = bannerDataList.map((e) => BannerModel.fromJson(e)).toList();
+    return bannerModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -55,18 +76,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 hSpacer(mHeight: 11),
                 slider(mWidth),
                 hSpacer(mHeight: 3),
-                AnimatedSmoothIndicator(
-                  activeIndex: myCarouslValue,
-                  count: DummyData.dummyBanner.length,
-                  effect: WormEffect(
-                    dotHeight: 10,
-                    dotWidth: 10,
-                    spacing: 8,
-                    dotColor: ColorConstant.greyColor,
-                    activeDotColor: ColorConstant.orangeColorPrimary,
-                    paintStyle: PaintingStyle.fill,
-                  ),
-                ),
+
                 hSpacer(mHeight: 11),
                 catList(mHeight, mWidth),
                 //* Special Offer For You
@@ -129,28 +139,64 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  //* Slider
-  CarouselSlider slider(double mWidth) {
-    return CarouselSlider(
-      items: DummyData.dummyBanner.map((e) {
-        return Container(
-          width: mWidth,
-          decoration: BoxDecoration(
-              // borderRadius: BorderRadius.circular(31),
-              image: DecorationImage(image: AssetImage(e.toString()))),
-        );
-      }).toList(),
-      options: CarouselOptions(
-        autoPlay: true,
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enlargeCenterPage: true,
-        aspectRatio: 2,
-        onPageChanged: (index, reason) {
-          myCarouslValue = index;
-          setState(() {});
-        },
-      ),
+  // * Slider
+  slider(double mWidth) {
+    return FutureBuilder(
+      future: bannerModel,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        } else if (snapshot.hasData) {
+          if (snapshot.data != null) {
+            return Column(
+              children: [
+                CarouselSlider(
+                  items: snapshot.data!.map((e) {
+                    return Container(
+                      width: mWidth,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  '${Urls.bannerImageUrl}/${e.photo}'))),
+                      // borderRadius: BorderRadius.circular(31),
+                      // image: DecorationImage(image: AssetImage(e.toString()))),
+                    );
+                  }).toList(),
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    aspectRatio: 3,
+                    onPageChanged: (index, reason) {
+                      myCarouslValue = index;
+                      setState(() {});
+                    },
+                  ),
+                ),
+                AnimatedSmoothIndicator(
+                  activeIndex: myCarouslValue,
+                  count: snapshot.data!.length,
+                  effect: WormEffect(
+                    dotHeight: 10,
+                    dotWidth: 10,
+                    spacing: 8,
+                    dotColor: ColorConstant.greyColor,
+                    activeDotColor: ColorConstant.orangeColorPrimary,
+                    paintStyle: PaintingStyle.fill,
+                  ),
+                ),
+              ],
+            );
+          }
+        }
+        return Container();
+      },
     );
   }
 
@@ -209,8 +255,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 }
 
-//* Category Widget
-class CategoryWidget extends StatelessWidget {
+// * Category Widget
+class CategoryWidget extends StatefulWidget {
   const CategoryWidget({
     super.key,
     required this.mWidth,
@@ -221,90 +267,166 @@ class CategoryWidget extends StatelessWidget {
   final double mHeight;
 
   @override
+  State<CategoryWidget> createState() => _CategoryWidgetState();
+}
+
+class _CategoryWidgetState extends State<CategoryWidget> {
+  late Future<LatestProductModel> latestProductModel;
+
+  @override
+  void initState() {
+    super.initState();
+
+    latestProductModel = getLatestProductApi();
+  }
+
+  Future<LatestProductModel> getLatestProductApi() async {
+    latestProductModel =
+        ApiHelper.getLatestProductApi(mUrl: Urls.latestProductUrl);
+    return latestProductModel;
+  }
+
+  //* Get Latest Product Data
+  // Future<LatestProductModel> getLatestProductApi() async {
+  //   var data = await ApiHelper.getBannerApi(url: Urls.latestProductUrl);
+  //   latestProductModel = data;
+  //   return latestProductModel;
+  // }
+
+  @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 11,
-        crossAxisSpacing: 11,
-        childAspectRatio: 2 / 2.2,
-      ),
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return Container(
-          width: mWidth * 0.1,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(21),
-            color: ColorConstant.greyColor200,
-          ),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: Container(
-                  width: mWidth * 0.1,
-                  height: mWidth * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(21),
-                      bottomLeft: Radius.circular(11),
-                    ),
-                    color: ColorConstant.orangeColorPrimary,
-                  ),
-                  child: Icon(
-                    Icons.favorite_border_outlined,
-                    color: ColorConstant.whiteColor,
-                  ),
+    return FutureBuilder(
+      future: latestProductModel,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('${snapshot.error}'),
+          );
+        } else if (snapshot.hasData) {
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 11,
+              crossAxisSpacing: 11,
+              childAspectRatio: 2 / 2.3,
+            ),
+            itemCount: snapshot.data!.products!.length,
+            itemBuilder: (context, index) {
+              var productData = snapshot.data!.products![index];
+              // print(
+              //     "Product Name-->   ${snapshot.data!.products![index].name!}");
+              return Container(
+                width: widget.mWidth * 0.1,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(21),
+                  color: ColorConstant.greyColor200,
                 ),
-              ),
-              Center(
-                child: Image.asset(
-                  IconConstant.headphoneIcon,
-                  width: mWidth * 0.25,
-                ),
-              ),
-              Text(
-                'Wireless Headphone',
-                style: mTextStyle16(mFontWeight: FontWeight.w600),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 11),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    Text(
-                      '\$120.00',
-                      style: mTextStyle14(mFontWeight: FontWeight.w600),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        width: widget.mWidth * 0.1,
+                        height: widget.mWidth * 0.1,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(21),
+                            bottomLeft: Radius.circular(11),
+                          ),
+                          color: ColorConstant.orangeColorPrimary,
+                        ),
+                        child: Icon(
+                          Icons.favorite_border_outlined,
+                          color: ColorConstant.whiteColor,
+                        ),
+                      ),
                     ),
-                    wSpacer(mWidth: 11),
-                    Expanded(
-                      child: SizedBox(
-                          height: mHeight * 0.03,
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.only(right: 5),
-                                width: mWidth * 0.05,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: ColorConstant.orangeColor700OP,
-                                ),
-                              );
-                            },
-                          )),
-                    )
+                    Center(
+                      child: CircleAvatar(
+                        radius: widget.mWidth * 0.125,
+                        backgroundImage: NetworkImage(
+                            "${Urls.productThumImageUrl}/${productData.thumbnail}"),
+                        // child: Image.network(
+                        //   "${Urls.productThumImageUrl}/${productData.thumbnail}",
+                        //   width: widget.mWidth * 0.27,
+                        // ),
+                      ),
+                    ),
+                    hSpacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        '${productData.name}',
+                        overflow: TextOverflow.ellipsis,
+                        // maxLines: 2,
+                        style: mTextStyle16(mFontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    hSpacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 11),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '\$${productData.purchasePrice}',
+                            style: mTextStyle14(mFontWeight: FontWeight.w600),
+                          ),
+                          wSpacer(mWidth: 11),
+                          Expanded(
+                            child: SizedBox(
+                              height: widget.mHeight * 0.03,
+                              child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: productData.colors!.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(right: 5),
+                                    width: widget.mWidth * 0.05,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ColorConstant.orangeColor700OP
+                                        // color: Color(
+                                        //   changeHexColor(
+                                        //     hexColorCode: productData!
+                                        //         .colors[index]!.code,
+                                        //   ),
+                                        // ),
+                                        ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        );
+              );
+            },
+          );
+        }
+
+        return Container();
       },
     );
+  }
+
+  int changeHexColor({required String hexColorCode}) {
+    hexColorCode = hexColorCode.toUpperCase().replaceAll("#", '');
+
+    if (hexColorCode.length == 6) {
+      hexColorCode = "'FF'$hexColorCode";
+    }
+
+    return int.parse(hexColorCode);
   }
 }
