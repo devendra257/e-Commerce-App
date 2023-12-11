@@ -19,4 +19,7 @@ class IconConstant {
   static String phoneIcon = '${_baseUrl}ic_phone.png';
   static String shoeIcon = '${_baseUrl}ic_shoe.png';
   static String tvIcon = '${_baseUrl}ic_tv.png';
+  static String addIcon = '${_baseUrl}ic_add.png';
+  static String minusIcon = '${_baseUrl}ic_minus.png';
+  static String backIcon = '${_baseUrl}ic_back.png';
 }

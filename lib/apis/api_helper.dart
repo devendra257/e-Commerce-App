@@ -30,6 +30,8 @@ class ApiHelper {
     }
   }
 
+  //* Get All Latest Product Data
+
   static Future<LatestProductModel> getLatestProductApi({
     required String mUrl,
     int mLimit = 10,
@@ -44,19 +46,4 @@ class ApiHelper {
       return LatestProductModel();
     }
   }
-
-  //* Get All Latest Product Data
-
-  // static Future<LatestProductModel> getLatestProductApi(
-  //     {required String mUrl, int mLimit = 10, int mPage = 1}) async {
-  //   var url = Uri.parse("${mUrl.toString()}?limit=$mLimit&offset=$mPage");
-  //   var response = await http.get(url);
-
-  //   if (response.statusCode == 200) {
-  //     var data = jsonDecode(response.body);
-  //     return data;
-  //   } else {
-  //     throw Exception();
-  //   }
-  // }
 }
