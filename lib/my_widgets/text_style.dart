@@ -14,6 +14,13 @@ TextStyle mTextStyle16({
   return TextStyle(fontWeight: mFontWeight, fontSize: 16, color: mColor);
 }
 
+TextStyle mTextStyle18({
+  FontWeight mFontWeight = FontWeight.normal,
+  Color mColor = Colors.black,
+}) {
+  return TextStyle(fontWeight: mFontWeight, fontSize: 16, color: mColor);
+}
+
 TextStyle mTextStyle20({
   FontWeight mFontWeight = FontWeight.normal,
   Color mColor = Colors.black,

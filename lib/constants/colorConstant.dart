@@ -10,4 +10,5 @@ class ColorConstant {
   static Color orangeColor700OP = Colors.orange.withOpacity(0.6);
   static Color tranColorPrimary = Colors.transparent;
   static Color whiteColor = Colors.white;
+  static Color blackColor = Colors.black;
 }

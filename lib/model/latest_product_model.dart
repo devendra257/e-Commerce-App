@@ -52,7 +52,7 @@ class Product {
   dynamic flashDeal;
   VideoProvider? videoProvider;
   dynamic videoUrl;
-  List<Color>? colors;
+  List<LColor>? colors;
   int? variantProduct;
   List<int>? attributes;
   List<ChoiceOption>? choiceOptions;
@@ -172,7 +172,7 @@ class Product {
         videoUrl: json["video_url"],
         colors: json["colors"] == null
             ? []
-            : List<Color>.from(json["colors"]!.map((x) => Color.fromJson(x))),
+            : List<LColor>.from(json["colors"]!.map((x) => LColor.fromJson(x))),
         variantProduct: json["variant_product"],
         attributes: json["attributes"] == null
             ? []
@@ -252,7 +252,7 @@ class Product {
         "video_url": videoUrl,
         "colors": colors == null
             ? []
-            : List<dynamic>.from(colors!.map((x) => x.toJson())),
+            : List<LColor>.from(colors!.map((x) => x.toJson())),
         "variant_product": variantProduct,
         "attributes": attributes == null
             ? []
@@ -351,16 +351,16 @@ class ChoiceOption {
       };
 }
 
-class Color {
+class LColor {
   String? name;
   String? code;
 
-  Color({
+  LColor({
     this.name,
     this.code,
   });
 
-  factory Color.fromJson(Map<String, dynamic> json) => Color(
+  factory LColor.fromJson(Map<String, dynamic> json) => LColor(
         name: json["name"],
         code: json["code"],
       );

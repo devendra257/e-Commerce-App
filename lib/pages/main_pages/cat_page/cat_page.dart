@@ -280,6 +280,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
     latestProductModel = getLatestProductApi();
   }
+  //* Get Latest Product Data
 
   Future<LatestProductModel> getLatestProductApi() async {
     latestProductModel =
@@ -287,7 +288,6 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     return latestProductModel;
   }
 
-  //* Get Latest Product Data
   // Future<LatestProductModel> getLatestProductApi() async {
   //   var data = await ApiHelper.getBannerApi(url: Urls.latestProductUrl);
   //   latestProductModel = data;
@@ -327,7 +327,9 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ProductDetailPage(),
+                      builder: (context) => ProductDetailPage(
+                        mIndex: index,
+                      ),
                     ),
                   );
                 },
@@ -397,20 +399,20 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: productData.colors!.length,
                                   itemBuilder: (context, index) {
+                                    var a = productData.colors!
+                                        .elementAt(index)
+                                        .code;
+
+                                    // print('Color $a');
                                     return Container(
                                       margin: const EdgeInsets.only(right: 5),
                                       width: widget.mWidth * 0.05,
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: ColorConstant.orangeColor700OP
-                                          // color: Color(
-
-                                          //   changeHexColor(
-                                          //     hexColorCode: productData!
-                                          //         .colors[index]!.code,
-                                          //   ),
-                                          // ),
-                                          ),
+                                        shape: BoxShape.circle,
+                                        color: HexColor.fromHex(
+                                          a!,
+                                        ),
+                                      ),
                                     );
                                   },
                                 ),
@@ -432,13 +434,32 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     );
   }
 
-  int changeHexColor({required String hexColorCode}) {
-    hexColorCode = hexColorCode.toUpperCase().replaceAll("#", '');
+  // Color changeHexColor({required String hexColorCode}) {
+  //   hexColorCode = hexColorCode.toLowerCase().replaceAll("#", '');
 
-    if (hexColorCode.length == 6) {
-      hexColorCode = "'FF'$hexColorCode";
-    }
+  //   print("Hex first - $hexColorCode");
 
-    return int.parse(hexColorCode);
+  //   if (hexColorCode.length == 6) {
+  //     hexColorCode = "0xFF" + hexColorCode;
+  //   }
+  //   print(hexColorCode);
+  //   return Color(int.parse(hexColorCode, radix: 16));
+  // }
+}
+
+extension HexColor on Color {
+  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
   }
+
+  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
+  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+      '${alpha.toRadixString(16).padLeft(2, '0')}'
+      '${red.toRadixString(16).padLeft(2, '0')}'
+      '${green.toRadixString(16).padLeft(2, '0')}'
+      '${blue.toRadixString(16).padLeft(2, '0')}';
 }
