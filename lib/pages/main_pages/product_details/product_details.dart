@@ -95,14 +95,28 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 widthFactor: 0.85,
                                 child: Container(
                                   width: 30,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.amber,
                                     shape: BoxShape.circle,
                                   ),
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          hSpacer(mHeight: 11),
+                          Container(
+                            padding: EdgeInsets.all(11),
+                            color: ColorConstant.orangeColor700OP,
+                            child: Text(
+                              'Description',
+                              style: mTextStyle18(mFontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          hSpacer(),
+                          Text(
+                            '${productDetails.metaDescription}',
+                            style: mTextStyle16(),
+                          ),
                         ],
                       ),
                       InkWell(
@@ -122,90 +136,96 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           child: const Icon(Icons.favorite_border_outlined),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: mWidth * 0.17,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(51),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(14.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  width: mWidth * 0.35,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(51),
-                                    border: Border.all(
-                                      width: 2,
-                                      color: ColorConstant.whiteColor,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 11, vertical: 5),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            if (orderCount > 1) {
-                                              orderCount--;
-                                              setState(() {});
-                                            }
-                                          },
-                                          child: Image.asset(
-                                            IconConstant.minusIcon,
-                                            color: ColorConstant.whiteColor,
-                                          ),
+                      StatefulBuilder(
+                        builder: (context, setState) {
+                          return Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              height: mWidth * 0.17,
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(51),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: mWidth * 0.35,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(51),
+                                        border: Border.all(
+                                          width: 2,
+                                          color: ColorConstant.whiteColor,
                                         ),
-                                        Text(
-                                          '$orderCount',
-                                          style: mTextStyle20(
-                                              mColor: ColorConstant.whiteColor,
-                                              mFontWeight: FontWeight.bold),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 11, vertical: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                if (orderCount > 1) {
+                                                  orderCount--;
+                                                  setState(() {});
+                                                }
+                                              },
+                                              child: Image.asset(
+                                                IconConstant.minusIcon,
+                                                color: ColorConstant.whiteColor,
+                                              ),
+                                            ),
+                                            Text(
+                                              '$orderCount',
+                                              style: mTextStyle20(
+                                                  mColor:
+                                                      ColorConstant.whiteColor,
+                                                  mFontWeight: FontWeight.bold),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                if (orderCount < 10) {
+                                                  orderCount++;
+                                                  setState(() {});
+                                                }
+                                              },
+                                              child: Image.asset(
+                                                IconConstant.addIcon,
+                                                color: ColorConstant.whiteColor,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            if (orderCount < 10) {
-                                              orderCount++;
-                                              setState(() {});
-                                            }
-                                          },
-                                          child: Image.asset(
-                                            IconConstant.addIcon,
-                                            color: ColorConstant.whiteColor,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: mWidth * 0.45,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstant.orangeColorPrimary,
-                                    borderRadius: BorderRadius.circular(31),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Add to Cart',
-                                      style: mTextStyle16(
-                                        mColor: ColorConstant.whiteColor,
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
+                                    Container(
+                                      width: mWidth * 0.45,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstant.orangeColorPrimary,
+                                        borderRadius: BorderRadius.circular(31),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Add to Cart',
+                                          style: mTextStyle16(
+                                            mColor: ColorConstant.whiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       )
                     ],
                   ),
