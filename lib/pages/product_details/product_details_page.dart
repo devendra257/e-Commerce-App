@@ -55,7 +55,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
             } else if (snapshot.hasData) {
-              if (snapshot.data != null) {
+              if (snapshot.data != null &&
+                  snapshot.data!.products!.isNotEmpty) {
                 var productDetails = snapshot.data!.products![widget.mIndex];
                 // var a = productDetails.colors!.elementAt(widget.mIndex).code;
 

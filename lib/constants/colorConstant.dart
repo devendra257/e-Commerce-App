@@ -13,4 +13,5 @@ class ColorConstant {
   static Color tranColorPrimary = Colors.transparent;
   static Color whiteColor = Colors.white;
   static Color blackColor = Colors.black;
+  static Color redColor = Colors.red;
 }
