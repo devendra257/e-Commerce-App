@@ -8,7 +8,7 @@ import 'package:e_comm/model/banner_model.dart';
 import 'package:e_comm/model/latest_product_model.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
-import 'package:e_comm/pages/product_details/product_details.dart';
+import 'package:e_comm/pages/product_details/product_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
