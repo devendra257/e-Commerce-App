@@ -6,9 +6,9 @@ import 'package:e_comm/constants/dummy_data.dart';
 import 'package:e_comm/constants/iconConstant.dart';
 import 'package:e_comm/model/banner_model.dart';
 import 'package:e_comm/model/latest_product_model.dart';
-import 'package:e_comm/my_widgets/spacing.dart';
-import 'package:e_comm/my_widgets/text_style.dart';
-import 'package:e_comm/pages/main_pages/product_details/product_details.dart';
+import 'package:e_comm/app_widgets/spacing.dart';
+import 'package:e_comm/app_widgets/text_style.dart';
+import 'package:e_comm/pages/product_details/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -448,7 +448,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 }
 
 extension HexColor on Color {
-  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
+  /// String is in the format "#aabbcc" or "ffaabbcc" with an optional leading "#".
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');

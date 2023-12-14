@@ -8,7 +8,7 @@ class Urls {
 
   static String productImageUrl = '';
   static String productThumImageUrl = '';
-  static String digitaProductImageUrl = '';
+  static String digitalProductImageUrl = '';
   static String brandImageUrl = '';
   static String bannerImageUrl = '';
   static String customerImageUrl = '';

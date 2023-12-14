@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:e_comm/pages/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 

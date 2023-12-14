@@ -1,13 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_comm/apis/api_helper.dart';
 import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/constants/colorConstant.dart';
-import 'package:e_comm/constants/dummy_data.dart';
 import 'package:e_comm/constants/iconConstant.dart';
-import 'package:e_comm/constants/imageConstant.dart';
 import 'package:e_comm/model/latest_product_model.dart';
-import 'package:e_comm/my_widgets/spacing.dart';
-import 'package:e_comm/my_widgets/text_style.dart';
+import 'package:e_comm/app_widgets/spacing.dart';
+import 'package:e_comm/app_widgets/text_style.dart';
+import 'package:e_comm/pages/cart/cart_list.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -24,6 +25,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   int orderCount = 1;
   int myCarouslValue = 0;
   bool visiableBorder = true;
+  // bool isAddtoCart = false;
 
   @override
   void initState() {
@@ -55,6 +57,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             } else if (snapshot.hasData) {
               if (snapshot.data != null) {
                 var productDetails = snapshot.data!.products![widget.mIndex];
+                // var a = productDetails.colors!.elementAt(widget.mIndex).code;
+
                 return Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Stack(
@@ -63,6 +67,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          //* Slider
                           slider(snapshot),
                           hSpacer(),
                           Text(
@@ -105,8 +110,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                           hSpacer(mHeight: 11),
                           Container(
-                            padding: EdgeInsets.all(11),
-                            color: ColorConstant.orangeColor700OP,
+                            padding: const EdgeInsets.all(11),
+                            decoration: BoxDecoration(
+                              color: ColorConstant.orangeColor700OP,
+                              borderRadius: BorderRadius.circular(11),
+                            ),
                             child: Text(
                               'Description',
                               style: mTextStyle18(mFontWeight: FontWeight.bold),
@@ -119,6 +127,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ],
                       ),
+
+                      //* Back Icon
                       InkWell(
                         onTap: () => Navigator.pop(context),
                         child: CircleAvatar(
@@ -129,6 +139,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ),
                       ),
+
+                      //* Fav Icon Border
                       Positioned(
                         right: 10,
                         child: CircleAvatar(
@@ -136,6 +148,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           child: const Icon(Icons.favorite_border_outlined),
                         ),
                       ),
+
+                      //* Add To Cart Wigdet
                       StatefulBuilder(
                         builder: (context, setState) {
                           return Align(
@@ -205,17 +219,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      width: mWidth * 0.45,
-                                      decoration: BoxDecoration(
-                                        color: ColorConstant.orangeColorPrimary,
-                                        borderRadius: BorderRadius.circular(31),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'Add to Cart',
-                                          style: mTextStyle16(
-                                            mColor: ColorConstant.whiteColor,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CartListPage(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width: mWidth * 0.45,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              ColorConstant.orangeColorPrimary,
+                                          borderRadius:
+                                              BorderRadius.circular(31),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            'Add to cart',
+                                            style: mTextStyle16(
+                                              mColor: ColorConstant.whiteColor,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -283,4 +310,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       },
     );
   }
+}
+
+extension HexColor on Color {
+  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+
+  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
+  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+      '${alpha.toRadixString(16).padLeft(2, '0')}'
+      '${red.toRadixString(16).padLeft(2, '0')}'
+      '${green.toRadixString(16).padLeft(2, '0')}'
+      '${blue.toRadixString(16).padLeft(2, '0')}';
 }

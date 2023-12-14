@@ -3,7 +3,7 @@ import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
 import 'package:e_comm/model/config_model.dart';
-import 'package:e_comm/pages/main_pages/home_page.dart';
+import 'package:e_comm/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
     var baseUrl = configData!.baseUrls!;
     Urls.productImageUrl = baseUrl.productImageUrl!;
     Urls.productThumImageUrl = baseUrl.productThumbnailUrl!;
-    Urls.digitaProductImageUrl = baseUrl.digitalProductUrl!;
+    Urls.digitalProductImageUrl = baseUrl.digitalProductUrl!;
     Urls.brandImageUrl = baseUrl.brandImageUrl!;
     Urls.customerImageUrl = baseUrl.categoryImageUrl!;
     Urls.categoryImageUrl = baseUrl.categoryImageUrl!;
