@@ -308,125 +308,129 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             child: Text('${snapshot.error}'),
           );
         } else if (snapshot.hasData) {
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 11,
-              crossAxisSpacing: 11,
-              childAspectRatio: 2 / 2.3,
-            ),
-            itemCount: snapshot.data!.products!.length,
-            itemBuilder: (context, index) {
-              var productData = snapshot.data!.products![index];
-              // print(
-              //     "Product Name-->   ${snapshot.data!.products![index].name!}");
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductDetailPage(
-                        mIndex: index,
+          if (snapshot.data != null && snapshot.data!.products!.isNotEmpty) {
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 11,
+                crossAxisSpacing: 11,
+                childAspectRatio: 2 / 2.3,
+              ),
+              itemCount: snapshot.data!.products!.length,
+              itemBuilder: (context, index) {
+                var productData = snapshot.data!.products![index];
+                // print(
+                //     "Product Name-->   ${snapshot.data!.products![index].name!}");
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailPage(
+                          mIndex: index,
+                        ),
                       ),
+                    );
+                  },
+                  child: Container(
+                    width: widget.mWidth * 0.1,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(21),
+                      color: ColorConstant.greyColor200,
                     ),
-                  );
-                },
-                child: Container(
-                  width: widget.mWidth * 0.1,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(21),
-                    color: ColorConstant.greyColor200,
-                  ),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          width: widget.mWidth * 0.1,
-                          height: widget.mWidth * 0.1,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(21),
-                              bottomLeft: Radius.circular(11),
-                            ),
-                            color: ColorConstant.orangeColorPrimary,
-                          ),
-                          child: Icon(
-                            Icons.favorite_border_outlined,
-                            color: ColorConstant.whiteColor,
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: CircleAvatar(
-                          radius: widget.mWidth * 0.125,
-                          backgroundImage: NetworkImage(
-                              "${Urls.productThumImageUrl}/${productData.thumbnail}"),
-                          // child: Image.network(
-                          //   "${Urls.productThumImageUrl}/${productData.thumbnail}",
-                          //   width: widget.mWidth * 0.27,
-                          // ),
-                        ),
-                      ),
-                      hSpacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          '${productData.name}',
-                          overflow: TextOverflow.ellipsis,
-                          // maxLines: 2,
-                          style: mTextStyle16(mFontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      hSpacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 11),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '\$${productData.purchasePrice}',
-                              style: mTextStyle14(mFontWeight: FontWeight.w600),
-                            ),
-                            wSpacer(mWidth: 11),
-                            Expanded(
-                              child: SizedBox(
-                                height: widget.mHeight * 0.03,
-                                child: ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: productData.colors!.length,
-                                  itemBuilder: (context, index) {
-                                    var a = productData.colors!
-                                        .elementAt(index)
-                                        .code;
-
-                                    // print('Color $a');
-                                    return Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      width: widget.mWidth * 0.05,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: HexColor.fromHex(
-                                          a!,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            width: widget.mWidth * 0.1,
+                            height: widget.mWidth * 0.1,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(21),
+                                bottomLeft: Radius.circular(11),
                               ),
-                            )
-                          ],
+                              color: ColorConstant.orangeColorPrimary,
+                            ),
+                            child: Icon(
+                              Icons.favorite_border_outlined,
+                              color: ColorConstant.whiteColor,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        Center(
+                          child: CircleAvatar(
+                            radius: widget.mWidth * 0.125,
+                            backgroundImage: NetworkImage(
+                                "${Urls.productThumImageUrl}/${productData.thumbnail}"),
+                            // child: Image.network(
+                            //   "${Urls.productThumImageUrl}/${productData.thumbnail}",
+                            //   width: widget.mWidth * 0.27,
+                            // ),
+                          ),
+                        ),
+                        hSpacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            '${productData.name}',
+                            overflow: TextOverflow.ellipsis,
+                            // maxLines: 2,
+                            style: mTextStyle16(mFontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        hSpacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 11),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '\$${productData.purchasePrice}',
+                                style:
+                                    mTextStyle14(mFontWeight: FontWeight.w600),
+                              ),
+                              wSpacer(mWidth: 11),
+                              Expanded(
+                                child: SizedBox(
+                                  height: widget.mHeight * 0.03,
+                                  child: ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: productData.colors!.length,
+                                    itemBuilder: (context, index) {
+                                      var a = productData.colors!
+                                          .elementAt(index)
+                                          .code;
+
+                                      // print('Color $a');
+                                      return Container(
+                                        margin: const EdgeInsets.only(right: 5),
+                                        width: widget.mWidth * 0.05,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: HexColor.fromHex(
+                                            a!,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          );
+                );
+              },
+            );
+          }
         }
 
         return Container();

@@ -234,7 +234,8 @@ class _CartListPageState extends State<CartListPage> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: ColorConstant.orangeColorPrimary,
-                              padding: EdgeInsets.symmetric(vertical: 11)),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 11)),
                           onPressed: () {},
                           child: Text(
                             'Checkout',

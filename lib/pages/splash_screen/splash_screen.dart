@@ -4,6 +4,7 @@ import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
 import 'package:e_comm/model/config_model.dart';
 import 'package:e_comm/pages/home_page.dart';
+import 'package:e_comm/pages/on_boarding_screen/login_page.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -60,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const HomePage(),
+                    builder: (context) => const LoginPage(),
                   ),
                 );
               }
