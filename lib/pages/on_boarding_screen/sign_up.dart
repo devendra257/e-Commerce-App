@@ -14,6 +14,9 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController emailController = TextEditingController();
+  TextEditingController fNameController = TextEditingController();
+  TextEditingController lNameController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   TextEditingController passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   hSpacer(mHeight: 11),
                   TextField(
-                    controller: emailController,
+                    controller: fNameController,
                     decoration: const InputDecoration(
                       labelText: 'First Name',
                       filled: true,
@@ -51,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   hSpacer(mHeight: 11),
                   TextField(
-                    controller: emailController,
+                    controller: lNameController,
                     decoration: const InputDecoration(
                       labelText: 'Last Name',
                       filled: true,
@@ -69,7 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   hSpacer(mHeight: 11),
                   TextField(
-                    controller: emailController,
+                    controller: mobileController,
                     decoration: const InputDecoration(
                       labelText: 'Mobile Number',
                       filled: true,

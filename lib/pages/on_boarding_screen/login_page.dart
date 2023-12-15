@@ -1,5 +1,4 @@
 import 'package:e_comm/app_widgets/spacing.dart';
-import 'package:e_comm/app_widgets/text_field.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
