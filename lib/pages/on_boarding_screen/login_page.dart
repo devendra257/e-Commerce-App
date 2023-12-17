@@ -1,8 +1,12 @@
+import 'package:e_comm/apis/api_helper.dart';
+import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
+import 'package:e_comm/model/login_model.dart';
 import 'package:e_comm/pages/on_boarding_screen/sign_up.dart';
+import 'package:e_comm/share_pref/share_pref.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +19,25 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  // late LoginModel loginModel;
+
+  @override
+  void initState() {
+    super.initState();
+    // getLoginApi();
+  }
+
+  getLoginApi({required LoginModel loginModel}) async {
+    ApiHelper.getLoginApi(mUrl: Urls.loginUrl, loginModel: loginModel)
+        .then((value) async {
+      print('value1: ${value['token']}');
+      var id = await SharePref.setTokenId(token: value['token']);
+      print('value2: ${id.toString()}');
+    });
+
+    // print("Login Page: ${res['token']}");
+  }
+
   @override
   Widget build(BuildContext context) {
     var mWidth = MediaQuery.of(context).size.width;
@@ -63,7 +86,14 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        var email = emailController.text.toString();
+                        var pass = passController.text.toString();
+
+                        getLoginApi(
+                            loginModel:
+                                LoginModel(email: email, password: pass));
+                      },
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 11),
                           backgroundColor: Colors.white,

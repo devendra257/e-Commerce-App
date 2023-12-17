@@ -1,7 +1,10 @@
+import 'package:e_comm/apis/api_helper.dart';
+import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
+import 'package:e_comm/model/signup_model.dart';
 import 'package:e_comm/pages/on_boarding_screen/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +21,21 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController lNameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController passController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  getSignUpApi({required SignUpModel signUpModel}) async {
+    var res = await ApiHelper.postSignUpApi(
+        mUrl: Urls.signUpUrl, signUpModel: signUpModel);
+
+    print('response--> ${res}');
+    // signUpModel = SignUpModel.fromJson(res);
+    // return signUpModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     var mWidth = MediaQuery.of(context).size.width;
@@ -93,7 +111,31 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        var fName = fNameController.text.toString();
+                        var lName = lNameController.text.toString();
+                        var email = emailController.text.toString();
+                        var mobile = mobileController.text.toString();
+                        var pass = passController.text.toString();
+
+                        // var res = SignUpModel(
+                        //   fName: fName,
+                        //   lName: lName,
+                        //   email: email,
+                        //   phone: mobile,
+                        //   password: pass,
+                        // ).toJson();
+
+                        getSignUpApi(
+                          signUpModel: SignUpModel(
+                            fName: fName,
+                            lName: lName,
+                            email: email,
+                            phone: mobile,
+                            password: pass,
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 11),
                           backgroundColor: Colors.white,

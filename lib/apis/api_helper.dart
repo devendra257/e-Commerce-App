@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:e_comm/apis/my_exception.dart';
 import 'package:e_comm/model/config_model.dart';
 import 'package:e_comm/model/latest_product_model.dart';
+import 'package:e_comm/model/login_model.dart';
+import 'package:e_comm/model/signup_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiHelper {
@@ -49,12 +51,15 @@ class ApiHelper {
   }
 
   //* Get Login Data..
-  static Future<dynamic> getLoginApi({required String mUrl}) async {
+  static Future<dynamic> getLoginApi(
+      {required String mUrl, required LoginModel loginModel}) async {
     var loginData;
 
     try {
-      var res = await http.post(Uri.parse(mUrl));
+      var res = await http.post(Uri.parse(mUrl), body: loginModel.toJson());
+
       loginData = returnDataResponse(res);
+      // print("Login Data -- ${res.body}");
     } on SocketException {
       throw FetchDataException(body: "Internet Error");
     }
@@ -62,11 +67,13 @@ class ApiHelper {
   }
 
   //* Get Sign Data...
-  static Future<dynamic> getSignUpApi({required String mUrl}) async {
+  static Future<dynamic> postSignUpApi(
+      {required String mUrl, required SignUpModel signUpModel}) async {
     var signUpData;
     try {
-      var res = await http.post(Uri.parse(mUrl));
+      var res = await http.post(Uri.parse(mUrl), body: signUpModel.toJson());
       signUpData = returnDataResponse(res);
+      print("SignUpdata -- ${res.body}");
     } on SocketException {
       throw FetchDataException(body: 'Internet Error');
     }
@@ -88,6 +95,7 @@ class ApiHelper {
 
       case 401:
       case 403:
+        print(response.body.toString());
         throw UnAuthorisedException(body: response.body.toString());
 
       //* Seever Error

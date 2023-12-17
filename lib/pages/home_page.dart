@@ -1,5 +1,6 @@
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/pages/cartegories/category_page.dart';
+import 'package:e_comm/pages/profile_page/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
@@ -19,9 +20,7 @@ class _HomePageState extends State<HomePage> {
     const Center(
       child: Text('fav'),
     ),
-    const Center(
-      child: Text('Cart'),
-    ),
+    const ProfilePage(),
     const Center(
       child: Text('Profile'),
     ),

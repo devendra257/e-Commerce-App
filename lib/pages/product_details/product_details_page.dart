@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_comm/apis/api_helper.dart';
@@ -9,6 +9,8 @@ import 'package:e_comm/model/latest_product_model.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
 import 'package:e_comm/pages/add_cart_list/add_cart_list_page.dart';
+import 'package:e_comm/pages/on_boarding_screen/login_page.dart';
+import 'package:e_comm/share_pref/share_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -221,14 +223,25 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       ),
                                     ),
                                     InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CartListPage(),
-                                          ),
-                                        );
+                                      onTap: () async {
+                                        var id = await SharePref.getTokenId();
+                                        if (id != '') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const CartListPage(),
+                                            ),
+                                          );
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginPage(),
+                                            ),
+                                          );
+                                        }
                                       },
                                       child: Container(
                                         width: mWidth * 0.45,
