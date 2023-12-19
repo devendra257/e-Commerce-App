@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:e_comm/apis/api_helper.dart';
 import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
@@ -5,6 +7,7 @@ import 'package:e_comm/app_widgets/text_style.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/imageConstant.dart';
 import 'package:e_comm/model/login_model.dart';
+import 'package:e_comm/pages/home_page.dart';
 import 'package:e_comm/pages/on_boarding_screen/sign_up.dart';
 import 'package:e_comm/share_pref/share_pref.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +33,16 @@ class _LoginPageState extends State<LoginPage> {
   getLoginApi({required LoginModel loginModel}) async {
     ApiHelper.getLoginApi(mUrl: Urls.loginUrl, loginModel: loginModel)
         .then((value) async {
-      print('value1: ${value['token']}');
-      var id = await SharePref.setTokenId(token: value['token']);
-      print('value2: ${id.toString()}');
+      // print('value1: ${value['token']}');
+      // var id =
+      await SharePref.setTokenId(token: value['token']);
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ));
+      // print('value2: ${id.toString()}');
     });
 
     // print("Login Page: ${res['token']}");

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:e_comm/apis/my_exception.dart';
+import 'package:e_comm/model/add_cart_model.dart';
 import 'package:e_comm/model/config_model.dart';
 import 'package:e_comm/model/latest_product_model.dart';
 import 'package:e_comm/model/login_model.dart';
@@ -73,11 +74,28 @@ class ApiHelper {
     try {
       var res = await http.post(Uri.parse(mUrl), body: signUpModel.toJson());
       signUpData = returnDataResponse(res);
-      print("SignUpdata -- ${res.body}");
+      // print("SignUpdata -- ${res.body}");
     } on SocketException {
       throw FetchDataException(body: 'Internet Error');
     }
     return signUpData;
+  }
+
+  //* Get Add Cart
+  static Future<dynamic> addCartApi(
+      {required String mUrl,
+      required AddCartModel addCartModel,
+      required String token}) async {
+    var addCartData;
+    try {
+      var response = await http.post(Uri.parse(mUrl),
+          body: addCartModel.toJson(),
+          headers: {'Authorization': "Bearer $token"});
+      addCartData = returnDataResponse(response);
+    } on SocketException {
+      throw FetchDataException(body: 'Internet Error');
+    }
+    return addCartData;
   }
 
   static dynamic returnDataResponse(http.Response response) {

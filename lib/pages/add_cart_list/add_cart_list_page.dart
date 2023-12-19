@@ -5,7 +5,10 @@ import 'package:e_comm/app_widgets/text_style.dart';
 import 'package:flutter/material.dart';
 
 class CartListPage extends StatefulWidget {
-  const CartListPage({super.key});
+  String itemId;
+  String quantity;
+
+  CartListPage({super.key, required this.itemId, required this.quantity});
 
   @override
   State<CartListPage> createState() => _CartListPageState();
@@ -14,6 +17,8 @@ class CartListPage extends StatefulWidget {
 class _CartListPageState extends State<CartListPage> {
   @override
   Widget build(BuildContext context) {
+    // print('Item Count :- ${widget.itemId}');
+    // print('Order Count :- ${widget.quantity}');
     var mWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: ColorConstant.greyColor200,

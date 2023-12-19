@@ -9,6 +9,8 @@ class Urls {
       'https://www.infusevalue.live/api/v1/auth/login';
   static const String signUpUrl =
       'https://www.infusevalue.live/api/v1/auth/register';
+  static const String addCartUrl =
+      'https://www.infusevalue.live/api/v1/cart/add';
 
   static String productImageUrl = '';
   static String productThumImageUrl = '';

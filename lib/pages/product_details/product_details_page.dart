@@ -5,6 +5,7 @@ import 'package:e_comm/apis/api_helper.dart';
 import 'package:e_comm/apis/api_url.dart';
 import 'package:e_comm/constants/colorConstant.dart';
 import 'package:e_comm/constants/iconConstant.dart';
+import 'package:e_comm/model/add_cart_model.dart';
 import 'package:e_comm/model/latest_product_model.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
@@ -124,10 +125,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                           ),
                           hSpacer(),
-                          Text(
-                            '${productDetails.metaDescription}',
-                            style: mTextStyle16(),
-                          ),
+                          SingleChildScrollView(
+                            child: Text(
+                              '${productDetails.metaDescription}',
+                              style: mTextStyle16(),
+                            ),
+                          )
                         ],
                       ),
 
@@ -226,12 +229,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       onTap: () async {
                                         var id = await SharePref.getTokenId();
                                         if (id != '') {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const CartListPage(),
+                                          await ApiHelper.addCartApi(
+                                            mUrl: Urls.addCartUrl,
+                                            addCartModel: AddCartModel(
+                                              id: "${widget.mIndex}",
+                                              quantity: '$orderCount',
                                             ),
+                                            token: await SharePref.getTokenId(),
+                                          ).then(
+                                            (value) {
+                                              // print(
+                                              //     'Order Count :- $orderCount');
+                                              // print(
+                                              //     'Item Count :- ${widget.mIndex}');
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CartListPage(
+                                                    itemId: widget.mIndex
+                                                        .toString(),
+                                                    quantity:
+                                                        orderCount.toString(),
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                           );
                                         } else {
                                           Navigator.push(
