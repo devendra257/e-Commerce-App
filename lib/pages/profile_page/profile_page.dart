@@ -24,9 +24,10 @@ class _ProfilePageState extends State<ProfilePage> {
     userID = getSharedPref();
   }
 
-  Future<dynamic> getSharedPref() async {
+  Future<String> getSharedPref() async {
     userID = await SharePref.getTokenId();
     setState(() {});
+    return userID;
   }
 
   @override
@@ -102,7 +103,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   InkWell(
                     onTap: () async {
-                      await SharePref.setTokenId(token: '');
+                      // await SharePref.setTokenId(token: '');
+                      var clear = await SharePref.removeToken();
+
+                      print("Clear Shared Pref -- $clear");
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

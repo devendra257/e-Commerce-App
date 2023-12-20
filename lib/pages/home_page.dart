@@ -1,4 +1,5 @@
 import 'package:e_comm/constants/colorConstant.dart';
+import 'package:e_comm/pages/cart_list/cart_list_page.dart';
 import 'package:e_comm/pages/cartegories/category_page.dart';
 import 'package:e_comm/pages/profile_page/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,7 @@ class _HomePageState extends State<HomePage> {
       child: Text('fav'),
     ),
     const ProfilePage(),
-    const Center(
-      child: Text('Profile'),
-    ),
+    CartListPage(itemId: '', quantity: ''),
   ];
   @override
   void initState() {

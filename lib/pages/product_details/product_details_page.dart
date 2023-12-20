@@ -9,7 +9,7 @@ import 'package:e_comm/model/add_cart_model.dart';
 import 'package:e_comm/model/latest_product_model.dart';
 import 'package:e_comm/app_widgets/spacing.dart';
 import 'package:e_comm/app_widgets/text_style.dart';
-import 'package:e_comm/pages/add_cart_list/add_cart_list_page.dart';
+import 'package:e_comm/pages/cart_list/cart_list_page.dart';
 import 'package:e_comm/pages/on_boarding_screen/login_page.dart';
 import 'package:e_comm/share_pref/share_pref.dart';
 import 'package:flutter/material.dart';
@@ -63,236 +63,247 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 var productDetails = snapshot.data!.products![widget.mIndex];
                 // var a = productDetails.colors!.elementAt(widget.mIndex).code;
 
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Stack(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //* Slider
-                          slider(snapshot),
-                          hSpacer(),
-                          Text(
-                            '${productDetails.name}',
-                            style: mTextStyle20(mFontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '\$${productDetails.purchasePrice}',
-                            style: mTextStyle18(mFontWeight: FontWeight.bold),
-                          ),
-                          hSpacer(mHeight: 11),
-                          Text(
-                            'Color',
-                            style: mTextStyle18(mFontWeight: FontWeight.bold),
-                          ),
-                          hSpacer(mHeight: 6),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                  width: 1, color: ColorConstant.blackColor),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: FractionallySizedBox(
-                                heightFactor:
-                                    0.85, // Adjust those two for the white space
-                                widthFactor: 0.85,
-                                child: Container(
-                                  width: 30,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.amber,
-                                    shape: BoxShape.circle,
+                return Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //* Slider
+                        slider(snapshot),
+                        hSpacer(),
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.all(11.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${productDetails.name}',
+                                    style: mTextStyle20(
+                                        mFontWeight: FontWeight.bold),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          hSpacer(mHeight: 11),
-                          Container(
-                            padding: const EdgeInsets.all(11),
-                            decoration: BoxDecoration(
-                              color: ColorConstant.orangeColor700OP,
-                              borderRadius: BorderRadius.circular(11),
-                            ),
-                            child: Text(
-                              'Description',
-                              style: mTextStyle18(mFontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          hSpacer(),
-                          SingleChildScrollView(
-                            child: Text(
-                              '${productDetails.metaDescription}',
-                              style: mTextStyle16(),
-                            ),
-                          )
-                        ],
-                      ),
-
-                      //* Back Icon
-                      InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: CircleAvatar(
-                          radius: mWidth * 0.06,
-                          child: Image.asset(
-                            IconConstant.backIcon,
-                            width: mWidth * 0.07,
-                          ),
-                        ),
-                      ),
-
-                      //* Fav Icon Border
-                      Positioned(
-                        right: 10,
-                        child: CircleAvatar(
-                          radius: mWidth * 0.06,
-                          child: const Icon(Icons.favorite_border_outlined),
-                        ),
-                      ),
-
-                      //* Add To Cart Wigdet
-                      StatefulBuilder(
-                        builder: (context, setState) {
-                          return Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              height: mWidth * 0.17,
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(51),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(14.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: mWidth * 0.35,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(51),
-                                        border: Border.all(
-                                          width: 2,
-                                          color: ColorConstant.whiteColor,
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11, vertical: 5),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                if (orderCount > 1) {
-                                                  orderCount--;
-                                                  setState(() {});
-                                                }
-                                              },
-                                              child: Image.asset(
-                                                IconConstant.minusIcon,
-                                                color: ColorConstant.whiteColor,
-                                              ),
-                                            ),
-                                            Text(
-                                              '$orderCount',
-                                              style: mTextStyle20(
-                                                  mColor:
-                                                      ColorConstant.whiteColor,
-                                                  mFontWeight: FontWeight.bold),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                if (orderCount < 10) {
-                                                  orderCount++;
-                                                  setState(() {});
-                                                }
-                                              },
-                                              child: Image.asset(
-                                                IconConstant.addIcon,
-                                                color: ColorConstant.whiteColor,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                  Text(
+                                    '\$${productDetails.purchasePrice}',
+                                    style: mTextStyle18(
+                                        mFontWeight: FontWeight.bold),
+                                  ),
+                                  hSpacer(mHeight: 11),
+                                  Text(
+                                    'Color',
+                                    style: mTextStyle18(
+                                        mFontWeight: FontWeight.bold),
+                                  ),
+                                  hSpacer(mHeight: 6),
+                                  Container(
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: ColorConstant.blackColor),
+                                      shape: BoxShape.circle,
                                     ),
-                                    InkWell(
-                                      onTap: () async {
-                                        var id = await SharePref.getTokenId();
-                                        if (id != '') {
-                                          await ApiHelper.addCartApi(
-                                            mUrl: Urls.addCartUrl,
-                                            addCartModel: AddCartModel(
-                                              id: "${widget.mIndex}",
-                                              quantity: '$orderCount',
-                                            ),
-                                            token: await SharePref.getTokenId(),
-                                          ).then(
-                                            (value) {
-                                              // print(
-                                              //     'Order Count :- $orderCount');
-                                              // print(
-                                              //     'Item Count :- ${widget.mIndex}');
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CartListPage(
-                                                    itemId: widget.mIndex
-                                                        .toString(),
-                                                    quantity:
-                                                        orderCount.toString(),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        } else {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const LoginPage(),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      child: Container(
-                                        width: mWidth * 0.45,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              ColorConstant.orangeColorPrimary,
-                                          borderRadius:
-                                              BorderRadius.circular(31),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'Add to cart',
-                                            style: mTextStyle16(
-                                              mColor: ColorConstant.whiteColor,
-                                            ),
+                                    child: Center(
+                                      child: FractionallySizedBox(
+                                        heightFactor:
+                                            0.85, // Adjust those two for the white space
+                                        widthFactor: 0.85,
+                                        child: Container(
+                                          width: 30,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.amber,
+                                            shape: BoxShape.circle,
                                           ),
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                  hSpacer(mHeight: 11),
+                                  Container(
+                                    padding: const EdgeInsets.all(11),
+                                    decoration: BoxDecoration(
+                                      color: ColorConstant.orangeColor700OP,
+                                      borderRadius: BorderRadius.circular(11),
+                                    ),
+                                    child: Text(
+                                      'Description',
+                                      style: mTextStyle18(
+                                          mFontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  hSpacer(),
+                                  Text(
+                                    '${productDetails.metaDescription}',
+                                    style: mTextStyle16(),
+                                  )
+                                ],
                               ),
                             ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
+                          ),
+                        )
+                      ],
+                    ),
+
+                    //* Back Icon
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: CircleAvatar(
+                        radius: mWidth * 0.06,
+                        child: Image.asset(
+                          IconConstant.backIcon,
+                          width: mWidth * 0.07,
+                        ),
+                      ),
+                    ),
+
+                    //* Fav Icon Border
+                    Positioned(
+                      right: 10,
+                      child: CircleAvatar(
+                        radius: mWidth * 0.06,
+                        child: const Icon(Icons.favorite_border_outlined),
+                      ),
+                    ),
+
+                    //* Add To Cart Wigdet
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        return Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: mWidth * 0.17,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(51),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(14.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: mWidth * 0.35,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(51),
+                                      border: Border.all(
+                                        width: 2,
+                                        color: ColorConstant.whiteColor,
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 11, vertical: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              if (orderCount > 1) {
+                                                orderCount--;
+                                                setState(() {});
+                                              }
+                                            },
+                                            child: Image.asset(
+                                              IconConstant.minusIcon,
+                                              color: ColorConstant.whiteColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            '$orderCount',
+                                            style: mTextStyle20(
+                                                mColor:
+                                                    ColorConstant.whiteColor,
+                                                mFontWeight: FontWeight.bold),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              if (orderCount < 10) {
+                                                orderCount++;
+                                                setState(() {});
+                                              }
+                                            },
+                                            child: Image.asset(
+                                              IconConstant.addIcon,
+                                              color: ColorConstant.whiteColor,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      var id = await SharePref.getTokenId();
+                                      if (id != '') {
+                                        await ApiHelper.addCartApi(
+                                          mUrl: Urls.addCartUrl,
+                                          addCartModel: AddCartModel(
+                                            id: "${widget.mIndex}",
+                                            quantity: '$orderCount',
+                                          ),
+                                          token: await SharePref.getTokenId(),
+                                        ).then(
+                                          (value) {
+                                            // print(
+                                            //     'Order Count :- $orderCount');
+                                            // print(
+                                            //     'Item Count :- ${widget.mIndex}');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CartListPage(
+                                                  itemId:
+                                                      widget.mIndex.toString(),
+                                                  quantity:
+                                                      orderCount.toString(),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginPage(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      width: mWidth * 0.45,
+                                      decoration: BoxDecoration(
+                                        color: ColorConstant.orangeColorPrimary,
+                                        borderRadius: BorderRadius.circular(31),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Add to cart',
+                                          style: mTextStyle16(
+                                            mColor: ColorConstant.whiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
                 );
               }
             }

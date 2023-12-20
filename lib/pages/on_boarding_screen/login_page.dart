@@ -35,7 +35,11 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) async {
       // print('value1: ${value['token']}');
       // var id =
-      await SharePref.setTokenId(token: value['token']);
+      String mToken = value['token'];
+      // ignore: unnecessary_brace_in_string_interps
+      print('mToken: ${mToken}');
+
+      await SharePref.setTokenId(token: mToken);
 
       Navigator.pushReplacement(
           context,

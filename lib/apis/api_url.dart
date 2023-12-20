@@ -11,6 +11,7 @@ class Urls {
       'https://www.infusevalue.live/api/v1/auth/register';
   static const String addCartUrl =
       'https://www.infusevalue.live/api/v1/cart/add';
+  static const String cartListUrl = 'https://www.infusevalue.live/api/v1/cart';
 
   static String productImageUrl = '';
   static String productThumImageUrl = '';

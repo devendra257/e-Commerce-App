@@ -284,7 +284,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
   Future<LatestProductModel> getLatestProductApi() async {
     latestProductModel =
-        ApiHelper.getLatestProductApi(mUrl: Urls.latestProductUrl);
+        ApiHelper.getLatestProductApi(mUrl: Urls.latestProductUrl, mLimit: 10);
     return latestProductModel;
   }
 

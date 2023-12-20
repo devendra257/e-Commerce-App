@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:e_comm/apis/my_exception.dart';
 import 'package:e_comm/model/add_cart_model.dart';
 import 'package:e_comm/model/config_model.dart';
@@ -38,7 +37,7 @@ class ApiHelper {
   //* Get All Latest Product Data
   static Future<LatestProductModel> getLatestProductApi({
     required String mUrl,
-    int mLimit = 10,
+    int mLimit = 20,
     int mPage = 1,
   }) async {
     var url = Uri.parse("${mUrl.toString()}?limit=$mLimit&offset=$mPage");
@@ -98,6 +97,23 @@ class ApiHelper {
     return addCartData;
   }
 
+  //* Get All Cart List
+  static Future<dynamic> cartListApi(
+      {required String mUrl, required var token}) async {
+    var cartList;
+    try {
+      var response = await http.get(
+        Uri.parse(mUrl),
+        headers: {'Authorization': "Bearer $token"},
+      );
+
+      cartList = returnDataResponse(response);
+    } on SocketException {
+      throw FetchDataException(body: 'Internet Error');
+    }
+    return cartList;
+  }
+
   static dynamic returnDataResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:
@@ -119,6 +135,7 @@ class ApiHelper {
       //* Seever Error
       case 500:
       default:
+        print(response.body.toString());
         throw FetchDataException(body: "Communcation Error to Server");
     }
   }
